@@ -16,3 +16,4 @@
 - [x] Adicionar elementos de efeito visual (partículas, linhas de energia, brilho animado)
 - [x] Otimizar Hero para mobile com zoom na imagem
 - [x] Otimizar Hero para desktop com melhor centralização e efeitos nas laterais
+- [ ] Fazer upload do projeto para GitHub com nome site_Brhuno

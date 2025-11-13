@@ -13,3 +13,4 @@
 - [x] Otimização de imagens
 - [x] Teste e ajustes finais
 - [x] Adicionar nova imagem do Hero com efeitos de movimento e paralaxe
+- [x] Adicionar elementos de efeito visual (partículas, linhas de energia, brilho animado)

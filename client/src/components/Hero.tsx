@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
+import HeroEffects from "./HeroEffects";
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -43,6 +44,9 @@ export default function Hero() {
           }}
         />
       </div>
+
+      {/* Hero Effects Component */}
+      <HeroEffects />
 
       {/* Animated Glow Effect */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

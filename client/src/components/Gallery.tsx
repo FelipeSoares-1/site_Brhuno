@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Gallery() {
@@ -14,39 +15,32 @@ export default function Gallery() {
     { src: "/6.jpg", alt: "Brhuno com a camisa do time" },
   ];
 
-  console.log("Gallery images:", images);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi, setSelectedIndex]);
 
   useEffect(() => {
-    if (!autoPlay) return;
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [autoPlay, images.length]);
-
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    setAutoPlay(false);
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-    setAutoPlay(false);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-    setAutoPlay(false);
-  };
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+  }, [emblaApi, onSelect]);
 
   return (
     <section id="gallery" className="relative bg-background py-20 sm:py-32 animate-fade-in">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-4xl">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <h2 className="mb-4 text-4xl font-bold text-foreground sm:text-5xl">
@@ -55,41 +49,33 @@ export default function Gallery() {
           <p className="text-lg text-muted-foreground">Momentos em destaque</p>
         </div>
 
-        {/* Carousel */}
-        <div className="relative overflow-hidden rounded-2xl border border-accent/20 bg-card/50">
-          {/* Images */}
-          <div className="relative h-96 w-full sm:h-[500px]">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
-                  index === currentIndex ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-              </div>
-            ))}
+        {/* Embla Carousel */}
+        <div className="relative">
+          <div className="overflow-hidden rounded-lg" ref={emblaRef}>
+            <div className="flex">
+              {images.map((image, index) => (
+                <div className="relative flex-shrink-0 w-full" key={index}>
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-auto object-cover"
+                    style={{ maxHeight: "600px" }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Navigation Buttons */}
           <button
-            onClick={goToPrevious}
-            onMouseEnter={() => setAutoPlay(false)}
-            onMouseLeave={() => setAutoPlay(true)}
+            onClick={scrollPrev}
             className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-accent/80 p-2 text-accent-foreground transition-all hover:bg-accent hover:shadow-lg active:scale-95"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
 
           <button
-            onClick={goToNext}
-            onMouseEnter={() => setAutoPlay(false)}
-            onMouseLeave={() => setAutoPlay(true)}
+            onClick={scrollNext}
             className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-accent/80 p-2 text-accent-foreground transition-all hover:bg-accent hover:shadow-lg active:scale-95"
           >
             <ChevronRight className="h-6 w-6" />
@@ -100,37 +86,15 @@ export default function Gallery() {
             {images.map((_, index) => (
               <button
                 key={index}
-                onClick={() => goToSlide(index)}
+                onClick={() => emblaApi?.scrollTo(index)}
                 className={`h-2 rounded-full transition-all ${
-                  index === currentIndex
+                  index === selectedIndex
                     ? "w-8 bg-accent"
                     : "w-2 bg-accent/40 hover:bg-accent/60"
                 }`}
               />
             ))}
           </div>
-        </div>
-
-        {/* Image Grid */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-3">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`group relative h-48 cursor-pointer overflow-hidden rounded-lg border transition-all ${
-                index === currentIndex
-                  ? "border-accent shadow-lg shadow-accent/30"
-                  : "border-accent/20 hover:border-accent/50"
-              }`}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="h-full w-full object-cover transition-transform group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            </div>
-          ))}
         </div>
       </div>
     </section>

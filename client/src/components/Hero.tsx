@@ -1,120 +1,95 @@
 import { ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
-import HeroEffects from "./HeroEffects";
+import { motion } from "framer-motion";
 
 export default function Hero() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
   const scrollToAbout = () => {
     const aboutSection = document.getElementById("about");
     aboutSection?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
-      });
-    };
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-background">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
-
-      {/* Main Hero Image with Parallax Effect */}
-      <div
-        className="absolute inset-0 flex items-center justify-center"
-        style={{
-          transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
-          transition: "transform 0.3s ease-out",
-        }}
+      {/* Background Image */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        initial={{ scale: 1.1, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.5 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
       >
         <img
-          src="/hero-main.png"
+          src="/bruno_2.png"
           alt="Brhuno Santana"
-          className="h-auto w-full sm:h-full sm:w-auto object-contain object-center drop-shadow-2xl"
-          style={{
-            filter: "drop-shadow(0 0 60px rgba(59, 130, 246, 0.4))",
-            scale: window.innerWidth < 640 ? "1.15" : "1.05",
-          }}
+          className="w-full h-full object-cover"
         />
-      </div>
-
-      {/* Hero Effects Component */}
-      <HeroEffects />
-
-      {/* Animated Glow Effect */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div
-          className="absolute w-96 h-96 rounded-full opacity-30 blur-3xl"
-          style={{
-            background: "radial-gradient(circle, rgba(59, 130, 246, 0.8), transparent)",
-            animation: "pulse 4s ease-in-out infinite",
-            transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
-            transition: "transform 0.3s ease-out",
-          }}
-        />
-      </div>
-
-      {/* Overlay with gradients - Desktop version */}
-      <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/60" />
-
-      {/* Side vignette effects for desktop */}
-      <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background via-background/20 to-transparent" />
-      <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background via-background/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/20" />
+      </motion.div>
 
       {/* Content */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl text-center">
+        <motion.div
+          className="max-w-3xl text-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Animated Badge */}
-          <div className="mb-6 inline-block animate-fade-in">
+          <motion.div variants={itemVariants} className="mb-6 inline-block">
             <div className="rounded-full border border-accent/30 bg-accent/10 px-4 py-2 backdrop-blur-sm">
               <p className="text-sm font-medium text-accent">Jovem Talento em Ascensão</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Main Title */}
-          <h1 className="mb-4 animate-fade-in text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+          <motion.h1
+            variants={itemVariants}
+            className="mb-4 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl"
+            style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}
+          >
             Brhuno <span className="text-accent">Santana</span>
-          </h1>
+          </motion.h1>
 
           {/* Subtitle */}
-          <p className="mb-8 animate-fade-in text-xl text-muted-foreground sm:text-2xl">
+          <motion.p
+            variants={itemVariants}
+            className="mb-8 text-xl text-white/80 sm:text-2xl"
+            style={{ textShadow: "0 1px 3px rgba(0,0,0,0.5)" }}
+          >
             Volante / Zagueiro • Talento Promissor do Futebol Brasileiro
-          </p>
-
-          {/* Stats Preview */}
-          <div className="mb-12 grid grid-cols-3 gap-4 animate-fade-in">
-            <div className="rounded-lg border border-accent/20 bg-card/40 p-4 backdrop-blur-sm">
-              <p className="text-2xl font-bold text-accent">1.80m</p>
-              <p className="text-sm text-muted-foreground">Altura</p>
-            </div>
-            <div className="rounded-lg border border-accent/20 bg-card/40 p-4 backdrop-blur-sm">
-              <p className="text-2xl font-bold text-accent">72kg</p>
-              <p className="text-sm text-muted-foreground">Peso</p>
-            </div>
-            <div className="rounded-lg border border-accent/20 bg-card/40 p-4 backdrop-blur-sm">
-              <p className="text-2xl font-bold text-accent">16 anos</p>
-              <p className="text-sm text-muted-foreground">Idade</p>
-            </div>
-          </div>
+          </motion.p>
 
           {/* CTA Button */}
-          <button
-            onClick={scrollToAbout}
-            className="group relative inline-flex items-center gap-2 rounded-lg bg-accent px-8 py-3 font-semibold text-accent-foreground transition-all duration-300 hover:shadow-lg hover:shadow-accent/50 active:scale-95"
-          >
-            Ver Perfil Completo
-            <ChevronDown className="h-5 w-5 transition-transform group-hover:translate-y-1" />
-          </button>
-        </div>
+          <motion.div variants={itemVariants}>
+            <button
+              onClick={scrollToAbout}
+              className="group relative inline-flex items-center gap-2 rounded-lg bg-accent px-8 py-3 font-semibold text-accent-foreground transition-all duration-300 hover:shadow-lg hover:shadow-accent/50 active:scale-95"
+            >
+              Ver Perfil Completo
+              <ChevronDown className="h-5 w-5 transition-transform group-hover:translate-y-1" />
+            </button>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Scroll Indicator */}
@@ -124,8 +99,6 @@ export default function Hero() {
           <ChevronDown className="h-5 w-5 text-accent" />
         </div>
       </div>
-
-
     </section>
   );
 }

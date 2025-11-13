@@ -12,3 +12,4 @@
 - [x] Animações e efeitos visuais impressionantes
 - [x] Otimização de imagens
 - [x] Teste e ajustes finais
+- [x] Adicionar nova imagem do Hero com efeitos de movimento e paralaxe

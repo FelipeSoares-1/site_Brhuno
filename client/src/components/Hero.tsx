@@ -1,27 +1,68 @@
 import { ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function Hero() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
   const scrollToAbout = () => {
     const aboutSection = document.getElementById("about");
     aboutSection?.scrollIntoView({ behavior: "smooth" });
   };
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
     <section className="relative h-screen w-full overflow-hidden bg-background">
-      {/* Background Image with Overlay */}
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
+
+      {/* Main Hero Image with Parallax Effect */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 flex items-center justify-center"
         style={{
-          backgroundImage: "url('/hero-2.jpg')",
+          transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
+          transition: "transform 0.3s ease-out",
         }}
       >
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/50" />
+        <img
+          src="/hero-main.png"
+          alt="Brhuno Santana"
+          className="h-full w-full object-contain object-center drop-shadow-2xl"
+          style={{
+            filter: "drop-shadow(0 0 60px rgba(59, 130, 246, 0.4))",
+          }}
+        />
       </div>
 
+      {/* Animated Glow Effect */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div
+          className="absolute w-96 h-96 rounded-full opacity-30 blur-3xl"
+          style={{
+            background: "radial-gradient(circle, rgba(59, 130, 246, 0.8), transparent)",
+            animation: "pulse 4s ease-in-out infinite",
+            transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+            transition: "transform 0.3s ease-out",
+          }}
+        />
+      </div>
+
+      {/* Overlay with gradients */}
+      <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/60" />
+
       {/* Content */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="relative z-20 flex h-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl text-center">
           {/* Animated Badge */}
           <div className="mb-6 inline-block animate-fade-in">
@@ -75,9 +116,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Animated Background Elements */}
-      <div className="absolute -bottom-1/2 -right-1/4 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />
-      <div className="absolute -top-1/2 -left-1/4 h-96 w-96 rounded-full bg-accent/5 blur-3xl" />
+
     </section>
   );
 }

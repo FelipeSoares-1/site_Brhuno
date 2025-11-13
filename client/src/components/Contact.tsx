@@ -41,7 +41,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative bg-card/30 py-20 sm:py-32">
+    <section id="contact" className="relative bg-card/30 py-20 sm:py-32 animate-fade-in">
       <div className="container mx-auto max-w-6xl">
         {/* Section Header */}
         <div className="mb-16 text-center">

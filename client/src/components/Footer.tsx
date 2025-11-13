@@ -1,3 +1,5 @@
+import { ThemeSwitcher } from "./ThemeSwitcher";
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -85,9 +87,12 @@ export default function Footer() {
           <p className="text-sm text-muted-foreground">
             &copy; {currentYear} Brhuno Santana. Todos os direitos reservados.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Desenvolvido com <span className="text-accent">❤️</span> para o futebol
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-sm text-muted-foreground">
+              Desenvolvido com <span className="text-accent">❤️</span> para o futebol
+            </p>
+            <ThemeSwitcher />
+          </div>
         </div>
       </div>
     </footer>

@@ -1,6 +1,6 @@
 export default function About() {
   return (
-    <section id="about" className="relative bg-background py-20 sm:py-32">
+    <section id="about" className="relative bg-background py-20 sm:py-32 animate-fade-in">
       <div className="container mx-auto max-w-6xl">
         {/* Section Header */}
         <div className="mb-16 text-center">

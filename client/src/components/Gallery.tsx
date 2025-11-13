@@ -6,7 +6,15 @@ export default function Gallery() {
     { src: "/hero-1.jpg", alt: "Brhuno em ação" },
     { src: "/hero-2.jpg", alt: "Brhuno com a bola" },
     { src: "/hero-3.jpg", alt: "Brhuno em movimento" },
+    { src: "/1.jpg", alt: "Brhuno em destaque" },
+    { src: "/2.jpg", alt: "Brhuno em campo" },
+    { src: "/3.jpg", alt: "Brhuno no jogo" },
+    { src: "/4.jpg", alt: "Brhuno em partida" },
+    { src: "/5.jpg", alt: "Brhuno mostrando habilidade" },
+    { src: "/6.jpg", alt: "Brhuno com a camisa do time" },
   ];
+
+  console.log("Gallery images:", images);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
@@ -37,7 +45,7 @@ export default function Gallery() {
   };
 
   return (
-    <section id="gallery" className="relative bg-background py-20 sm:py-32">
+    <section id="gallery" className="relative bg-background py-20 sm:py-32 animate-fade-in">
       <div className="container mx-auto max-w-6xl">
         {/* Section Header */}
         <div className="mb-16 text-center">

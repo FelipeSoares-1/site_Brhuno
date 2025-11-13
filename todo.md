@@ -14,3 +14,5 @@
 - [x] Teste e ajustes finais
 - [x] Adicionar nova imagem do Hero com efeitos de movimento e paralaxe
 - [x] Adicionar elementos de efeito visual (partículas, linhas de energia, brilho animado)
+- [x] Otimizar Hero para mobile com zoom na imagem
+- [x] Otimizar Hero para desktop com melhor centralização e efeitos nas laterais

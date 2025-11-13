@@ -38,9 +38,10 @@ export default function Hero() {
         <img
           src="/hero-main.png"
           alt="Brhuno Santana"
-          className="h-full w-full object-contain object-center drop-shadow-2xl"
+          className="h-auto w-full sm:h-full sm:w-auto object-contain object-center drop-shadow-2xl"
           style={{
             filter: "drop-shadow(0 0 60px rgba(59, 130, 246, 0.4))",
+            scale: window.innerWidth < 640 ? "1.15" : "1.05",
           }}
         />
       </div>
@@ -61,9 +62,13 @@ export default function Hero() {
         />
       </div>
 
-      {/* Overlay with gradients */}
-      <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40" />
+      {/* Overlay with gradients - Desktop version */}
+      <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/60" />
+
+      {/* Side vignette effects for desktop */}
+      <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background via-background/20 to-transparent" />
+      <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background via-background/20 to-transparent" />
 
       {/* Content */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8">

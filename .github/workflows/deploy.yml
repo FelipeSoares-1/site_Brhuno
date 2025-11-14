@@ -2,8 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
@@ -14,30 +13,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 9
-      
-      - name: Setup Node
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      
+
       - name: Install dependencies
-        run: pnpm install
-      
+        run: pnpm install --frozen-lockfile
+
       - name: Build
         run: pnpm build
-      
-      - name: Commit and push if changed
+
+      - name: Commit and push dist
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add dist/public
-          git commit -m "chore: update dist/public for deployment" || echo "No changes to commit"
-          git push || echo "No changes to push"
+          git add dist/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update dist for deployment" && git push)
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

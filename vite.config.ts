@@ -10,6 +10,7 @@ const plugins = [react(), tailwindcss(), vitePluginManusRuntime()];
 
 export default defineConfig({
   plugins,
+  base: "/site_Brhuno/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -22,7 +23,6 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    base: "/site_Brhuno/",
   },
   server: {
     port: 3000,
